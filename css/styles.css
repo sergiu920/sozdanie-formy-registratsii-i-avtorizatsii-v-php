@@ -1,0 +1,84 @@
+
+.clear{
+    clear: both;
+}
+
+.mesage_error{
+    color: #cc0000;
+}
+
+.success_message{
+    color: green;
+}
+
+.block_for_messages{
+    text-align: center;
+}
+
+#header, #footer{
+    border: 2px solid #000;
+}
+
+#header{
+    padding-left: 10px;
+}
+
+#footer{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+}
+
+#header h2, #footer h2{
+    text-align: center;
+    margin: 0;
+}
+
+#auth_block{
+    width: 290px;
+    float: right;
+    text-align: center;
+}
+
+#auth_block a{
+    display: block;
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
+    width: 110px;
+    height: 30px;
+    text-decoration: none;
+}
+
+#auth_block a:hover{
+    text-decoration: underline;
+}
+
+#link_register{
+    float: left;
+}
+
+#link_auth, #link_logout{
+    float: right;
+}
+
+#link_register a{
+    background: #54d854;
+}
+
+#link_auth a, #link_logout a{
+    background: #4e4eec;
+    text-align: center;
+}
+
+/* Блок с формой регистрации */
+#form_register, #form_auth{
+    width: 300px;
+    margin: 0 auto;
+}
+
+
+#authorized h2{
+    text-align: center;
+}
