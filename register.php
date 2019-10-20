@@ -90,7 +90,7 @@
                 }else{
 
                     // Сохраняем в сессию сообщение об ошибке. 
-                    $_SESSION["error_messages"] .= "<p class='mesage_error' >Укажите Вашу фамилию</p>";
+                    $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите Вашу фамилию</p>";
                     
                     //Возвращаем пользователя на страницу регистрации
                     header("HTTP/1.1 301 Moved Permanently");
@@ -104,7 +104,7 @@
             }else{
 
                 // Сохраняем в сессию сообщение об ошибке. 
-                $_SESSION["error_messages"] .= "<p class='mesage_error' >Отсутствует поле с фамилией</p>";
+                $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует поле с фамилией</p>";
                 
                 //Возвращаем пользователя на страницу регистрации
                 header("HTTP/1.1 301 Moved Permanently");
@@ -179,7 +179,7 @@
                     $result_query->close();
                 }else{
                     // Сохраняем в сессию сообщение об ошибке. 
-                    $_SESSION["error_messages"] .= "<p class='mesage_error' >Укажите Ваш email</p>";
+                    $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите Ваш email</p>";
                     
                     //Возвращаем пользователя на страницу регистрации
                     header("HTTP/1.1 301 Moved Permanently");
@@ -191,7 +191,7 @@
 
             }else{
                 // Сохраняем в сессию сообщение об ошибке. 
-                $_SESSION["error_messages"] .= "<p class='mesage_error' >Отсутствует поле для ввода Email</p>";
+                $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует поле для ввода Email</p>";
                 
                 //Возвращаем пользователя на страницу регистрации
                 header("HTTP/1.1 301 Moved Permanently");
@@ -214,7 +214,7 @@
                     $password = md5($password."top_secret"); 
                 }else{
                     // Сохраняем в сессию сообщение об ошибке. 
-                    $_SESSION["error_messages"] .= "<p class='mesage_error' >Укажите Ваш пароль</p>";
+                    $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите Ваш пароль</p>";
                     
                     //Возвращаем пользователя на страницу регистрации
                     header("HTTP/1.1 301 Moved Permanently");
@@ -226,7 +226,7 @@
 
             }else{
                 // Сохраняем в сессию сообщение об ошибке. 
-                $_SESSION["error_messages"] .= "<p class='mesage_error' >Отсутствует поле для ввода пароля</p>";
+                $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует поле для ввода пароля</p>";
                 
                 //Возвращаем пользователя на страницу регистрации
                 header("HTTP/1.1 301 Moved Permanently");
