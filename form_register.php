@@ -82,6 +82,34 @@
                 $('#valid_password_message').text('Введите пароль');
             }
         });
+
+        //(1) — Место для следующего куска кода
+
+        confirm_password.blur(function(){
+            //Если пароли не совпадают
+            if(password.val() !== confirm_password.val()){
+                //Выводим сообщение об ошибке
+                $('#valid_confirm_password_message').text('Пароли не совпадают');
+
+                // Дезактивируем кнопку отправки
+                $('input[type=submit]').attr('disabled', true);
+            }else{
+                //Иначе, проверяем длину пароля
+                if(password.val().length > 6){
+
+                    // Убираем сообщение об ошибке у поля для ввода пароля
+                    $('#valid_password_message').text('');
+
+                    //Активируем кнопку отправки
+                    $('input[type=submit]').attr('disabled', false);
+                }
+
+                // Убираем сообщение об ошибке у поля для ввода повторного пароля
+                $('#valid_confirm_password_message').text('');
+            }
+
+        });
+
     });
 </script>
 
