@@ -1,0 +1,1 @@
+[04-Nov-2019 21:27:19 Europe/Chisinau] PHP Warning:  mysqli::mysqli(): (HY000/1045): Access denied for user 'userdb'@'localhost' (using password: YES) in /home/sozdati/developer.sozdatisite.ru/dbconnect.php on line 11
