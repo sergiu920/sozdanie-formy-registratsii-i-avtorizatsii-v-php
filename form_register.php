@@ -161,7 +161,8 @@
                     <tr>
                         <td> Email: </td>
                         <td>
-                            <input type="email" name="email" required="required"><br>
+                            <input type="email" name="email" maxlength="100" required="required">
+                            <p class="note_text">Укажите правильный Email, так как на нём будет выслано сообщение для подтверждения почты.</p>
                             <span id="valid_email_message" class="mesage_error"></span>
                         </td>
                     </tr>

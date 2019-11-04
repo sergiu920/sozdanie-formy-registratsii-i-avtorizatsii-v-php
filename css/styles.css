@@ -15,6 +15,15 @@
     text-align: center;
 }
 
+.text_center{
+    text-align: center;
+}
+
+.note_text{
+    color: #667;
+    font-size: 12px;
+}
+
 #header, #footer{
     border: 2px solid #000;
 }
