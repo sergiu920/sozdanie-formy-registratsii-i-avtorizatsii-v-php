@@ -282,18 +282,66 @@
                 exit();
             }else{
 
-                $_SESSION["success_messages"] = "<p class='success_message'>Регистрация прошла успешно!!! <br />Теперь Вы можете авторизоваться используя Ваш логин и пароль.</p>";
+                //Составляем зашифрованный и уникальный token
+                $token = md5($email.time());
 
-                //Отправляем пользователя на страницу авторизации
-                header("HTTP/1.1 301 Moved Permanently");
-                header("Location: ".$address_site."/form_auth.php");
+                //Добавляем данные в таблицу confirm_users
+                $query_insert_confirm = $mysqli->query("INSERT INTO `confirm_users` (email, token, date_registration) VALUES ('".$email."', '".$token."', NOW()) ");
+
+                if(!$query_insert_confirm){
+                    // Сохраняем в сессию сообщение об ошибке.
+                    $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на добавления пользователя в БД (confirm)</p>";
+
+                    //Возвращаем пользователя на страницу регистрации
+                    header("HTTP/1.1 301 Moved Permanently");
+                    header("Location: ".$address_site."form_register.php");
+
+                    //Останавливаем  скрипт
+                    exit();
+                }else{
+
+                    //Составляем заголовок письма
+                    $subject = "Подтверждение почты на сайте ".$_SERVER['HTTP_HOST'];
+
+                    //Устанавливаем кодировку заголовка письма и кодируем его
+                    $subject = "=?utf-8?B?".base64_encode($subject)."?=";
+
+                    //Составляем тело сообщения
+                    $message = 'Здравствуйте! <br/> <br/> Сегодня '.date("d.m.Y", time()).', неким пользователем была произведена регистрация на сайте <a href="'.$address_site.'">'.$_SERVER['HTTP_HOST'].'</a> используя Ваш email. Если это были Вы, то, пожалуйста, подтвердите адрес вашей электронной почты, перейдя по этой ссылке: <a href="'.$address_site.'activation.php?token='.$token.'&email='.$email.'">'.$address_site.'activation/'.$token.'</a> <br/> <br/> В противном случае, если это были не Вы, то, просто игнорируйте это письмо. <br/> <br/> <strong>Внимание!</strong> Ссылка действительна 24 часа. После чего Ваш аккаунт будет удален из базы.';
+
+                    //Составляем дополнительные заголовки для почтового сервиса mail.ru
+                    //Переменная $email_admin, объявлена в файле dbconnect.php
+                    $headers = "FROM: $email_admin\r\nReply-to: $email_admin\r\nContent-type: text/html; charset=utf-8\r\n";
+
+                    //Отправляем сообщение с ссылкой для подтверждения регистрации на указанную почту и проверяем отправлена ли она успешно или нет.
+                    if(mail($email, $subject, $message, $headers)){
+                        $_SESSION["success_messages"] = "<h4 class='success_message'><strong>Регистрация прошла успешно!!!</strong></h4><p class='success_message'> Теперь необходимо подтвердить введенный адрес электронной почты. Для этого, перейдите по ссылке указанную в сообщение, которую получили на почту ".$email." </p>";
+
+                        //Отправляем пользователя на страницу регистрации и убираем форму регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: ".$address_site."form_register.php?hidden_form=1");
+                        exit();
+
+                    }else{
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p>";
+                    }
+
+                    // Завершение запроса добавления пользователя в таблицу users
+                    $result_query_insert->close();
+
+                    // Завершение запроса добавления пользователя в таблицу confirm_users
+                    $query_insert_confirm->close();
+                }
             }
-
-            /* Завершение запроса */
-            $result_query_insert->close();
 
             //Закрываем подключение к БД
             $mysqli->close();
+
+            //Отправляем пользователя на страницу регистрации
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: ".$address_site."form_register.php");
+
+            exit();
             
         }else{
             //Если капча не передана либо оно является пустой

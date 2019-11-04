@@ -138,6 +138,8 @@
     //Проверяем, если пользователь не авторизован, то выводим форму регистрации, 
     //иначе выводим сообщение о том, что он уже зарегистрирован
     if(!isset($_SESSION["email"]) && !isset($_SESSION["password"])){
+
+        if(!isset($_GET["hidden_form"])){
 ?>
         <div id="form_register">
             <h2>Форма регистрации</h2>
@@ -201,6 +203,8 @@
             </form>
         </div>
 <?php
+        }//закрываем условие hidden_form
+
     }else{
 ?>
         <div id="authorized">
