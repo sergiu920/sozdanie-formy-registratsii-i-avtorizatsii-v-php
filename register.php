@@ -11,6 +11,11 @@
     //Объявляем ячейку для добавления успешных сообщений
     $_SESSION["success_messages"] = '';
 
+    //Вывод PHP ошибок
+    ini_set('error_reporting', E_ALL);
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+
     /*
         Проверяем была ли отправлена форма, то есть была ли нажата кнопка зарегистрироваться. Если да, то идём дальше, если нет, значит пользователь зашёл на эту страницу напрямую. В этом случае выводим ему сообщение об ошибке.
     */
@@ -218,7 +223,7 @@
 
                         //Возвращаем пользователя на страницу регистрации
                         header("HTTP/1.1 301 Moved Permanently");
-                        header("Location: ".$address_site."form_register.php");
+                        header("Location: ".$address_site."/form_register.php");
 
                         //Останавливаем  скрипт
                         exit();
@@ -230,7 +235,7 @@
 
                     //Возвращаем пользователя на страницу регистрации
                     header("HTTP/1.1 301 Moved Permanently");
-                    header("Location: ".$address_site."form_register.php");
+                    header("Location: ".$address_site."/form_register.php");
 
                     //Останавливаем  скрипт
                     exit();
@@ -290,11 +295,11 @@
 
                 if(!$query_insert_confirm){
                     // Сохраняем в сессию сообщение об ошибке.
-                    $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на добавления пользователя в БД (confirm)</p>";
+                    $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на добавления пользователя в БД (confirm)</p><p>".$mysqli->error."</p>";
 
                     //Возвращаем пользователя на страницу регистрации
                     header("HTTP/1.1 301 Moved Permanently");
-                    header("Location: ".$address_site."form_register.php");
+                    header("Location: ".$address_site."/form_register.php");
 
                     //Останавливаем  скрипт
                     exit();
@@ -319,7 +324,7 @@
 
                         //Отправляем пользователя на страницу регистрации и убираем форму регистрации
                         header("HTTP/1.1 301 Moved Permanently");
-                        header("Location: ".$address_site."form_register.php?hidden_form=1");
+                        header("Location: ".$address_site."/form_register.php?hidden_form=1");
                         exit();
 
                     }else{
@@ -339,7 +344,7 @@
 
             //Отправляем пользователя на страницу регистрации
             header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."form_register.php");
+            header("Location: ".$address_site."/form_register.php");
 
             exit();
             
