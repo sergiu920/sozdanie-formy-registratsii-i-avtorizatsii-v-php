@@ -330,12 +330,7 @@
                     }else{
                         $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p>";
                     }
-
-                    // Завершение запроса добавления пользователя в таблицу users
-                    $result_query_insert->close();
-
-                    // Завершение запроса добавления пользователя в таблицу confirm_users
-                    $query_insert_confirm->close();
+                    
                 }
             }
 
