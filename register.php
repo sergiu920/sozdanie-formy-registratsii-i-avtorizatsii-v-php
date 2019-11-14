@@ -323,12 +323,12 @@
                         $mail->SMTPAuth = true; // Включаем SMTP авторизацию
 
                         $mail->Host = 'smtp.yandex.ru'; // Указываем SMTP сервер, который будет отправлять письма
-                        $mail->Username = 'main.disk1@yandex.ru'; // Ваш логин от почты с которой будут отправляться письма
-                        $mail->Password = 'NEcuX7jjQB'; //  iqplaaqezboiujwv  Ваш пароль от почты с которой будут отправляться письма
+                        $mail->Username = 's5mtphost'; // Ваш логин от почты с которой будут отправляться письма
+                        $mail->Password = 's5mtphost25'; //  iqplaaqezboiujwv  Ваш пароль от почты с которой будут отправляться письма
                         $mail->SMTPSecure = 'ssl';  // Включаем шифровку ssl. Можно и TLS.
                         $mail->Port = 465; // TCP порт. Этот порт может отличаться у других провайдеров
 
-                        $mail->setFrom('main.disk1@yandex.ru', 'Admin'); // от кого будет уходить письмо?
+                        $mail->setFrom('s5mtphost@yandex.ru'); // от кого будет уходить письмо?
 
                         $mail->addAddress($email); // Кому будет уходить письмо
 
