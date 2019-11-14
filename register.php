@@ -315,7 +315,7 @@
                     $mail->Host = 'smtp.gmail.com'; // Указываем SMTP сервер, который будет отправлять письма
                     $mail->SMTPAuth = true; // Включаем SMTP авторизацию
                     $mail->Username = 'xmantest3@gmail.com'; // Ваш логин от почты с которой будут отправляться письма
-                    $mail->Password = 's16071992#'; // iqplaaqezboiujwv.  Ваш пароль от почты с которой будут отправляться письма
+                    $mail->Password = 's16071992#'; //  iqplaaqezboiujwv  Ваш пароль от почты с которой будут отправляться письма
                     $mail->SMTPSecure = 'ssl';  // Включаем шифровку ssl. Можно и TLS.
                     $mail->Port = 465; // TCP порт. Этот порт может отличаться у других провайдеров
 
@@ -331,7 +331,7 @@
                     $mail->Body    = $message;
                     $mail->AltBody = '';
 
-                    if(!$mail->send()) {
+                    if($mail->send()) {
 
                         $_SESSION["success_messages"] = "<h4 class='success_message'><strong>Регистрация прошла успешно!!!</strong></h4><p class='success_message'> Теперь необходимо подтвердить введенный адрес электронной почты. Для этого, перейдите по ссылке указанную в сообщение, которую получили на почту ".$email." </p>";
 
