@@ -322,9 +322,9 @@
 
                         $mail->SMTPAuth = true; // Включаем SMTP авторизацию
 
-                        $mail->Host = 'smtp.gmail.com'; // Указываем SMTP сервер, который будет отправлять письма
-                        $mail->Username = 'xmantest3@gmail.com'; // Ваш логин от почты с которой будут отправляться письма
-                        $mail->Password = 's16071992#'; //  iqplaaqezboiujwv  Ваш пароль от почты с которой будут отправляться письма
+                        $mail->Host = 'smtp.yandex.ru'; // Указываем SMTP сервер, который будет отправлять письма
+                        $mail->Username = 'main.disk1@yandex.ru'; // Ваш логин от почты с которой будут отправляться письма
+                        $mail->Password = 'NEcuX7jjQB'; //  iqplaaqezboiujwv  Ваш пароль от почты с которой будут отправляться письма
                         $mail->SMTPSecure = 'ssl';  // Включаем шифровку ssl. Можно и TLS.
                         $mail->Port = 465; // TCP порт. Этот порт может отличаться у других провайдеров
 
@@ -343,7 +343,7 @@
 
                         if($mail->send()) {
 
-                            $_SESSION["success_messages"] = "<h4 class='success_message'><strong>Регистрация прошла успешно!!!</strong></h4><p class='success_message'> Теперь необходимо подтвердить введенный адрес электронной почты. Для этого, перейдите по ссылке указанную в сообщение, которую получили на почту ".$email." </p>";
+                            $_SESSION["success_messages"] = "<h4 class='success_message'><strong>Регистрация прошла успешно!!!</strong></h4><p class='success_message'> Теперь необходимо подтвердить введенный адрес электронной почты. Для этого, перейдите по ссылке указанную в сообщение, которую получили на почту ".$email." </p><p> Причина ошибки: {$mail->ErrorInfo} </p>";
 
                             //Отправляем пользователя на страницу регистрации и убираем форму регистрации
                             header("HTTP/1.1 301 Moved Permanently");
@@ -351,7 +351,7 @@
                             exit();
 
                         } else {
-                            $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p>";
+                            $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p><p> Причина ошибки: {$mail->ErrorInfo} </p>";
                         }
 
                     } catch (Exception $e) {
