@@ -305,8 +305,47 @@
                     exit();
                 }else{
 
+                    // Подключаем библиотеку PHPMAILER
+                    require_once('phpmailer/PHPMailerAutoload.php');
+                    $mail = new PHPMailer;
+                    $mail->CharSet = 'utf-8';
+
+                    $mail->isSMTP(); // Указываем что необходимо использовать SMTP
+
+                    $mail->Host = 'smtp.gmail.com'; // Указываем SMTP сервер, который будет отправлять письма
+                    $mail->SMTPAuth = true; // Включаем SMTP авторизацию
+                    $mail->Username = 'xmantest3@gmail.com'; // Ваш логин от почты с которой будут отправляться письма
+                    $mail->Password = 's16071992#'; // iqplaaqezboiujwv.  Ваш пароль от почты с которой будут отправляться письма
+                    $mail->SMTPSecure = 'ssl';  // Включаем шифровку ssl. Можно и TLS.
+                    $mail->Port = 465; // TCP порт. Этот порт может отличаться у других провайдеров
+
+                    $mail->setFrom('main.disk1@yandex.ru'); // от кого будет уходить письмо?
+                    $mail->addAddress($email); // Кому будет уходить письмо
+
+                    $mail->isHTML(true); // Указываем что будем отправлять в формате HTML
+
+                    $mail->Subject = "Подтверждение почты на сайте ".$_SERVER['HTTP_HOST'];
+
+                    $message = 'Здравствуйте! <br/> <br/> Сегодня '.date("d.m.Y", time()).', неким пользователем была произведена регистрация на сайте <a href="'.$address_site.'">'.$_SERVER['HTTP_HOST'].'</a> используя Ваш email. Если это были Вы, то, пожалуйста, подтвердите адрес вашей электронной почты, перейдя по этой ссылке: <a href="'.$address_site.'activation.php?token='.$token.'&email='.$email.'">'.$address_site.'activation/'.$token.'</a> <br/> <br/> В противном случае, если это были не Вы, то, просто игнорируйте это письмо. <br/> <br/> <strong>Внимание!</strong> Ссылка действительна 24 часа. После чего Ваш аккаунт будет удален из базы.';
+
+                    $mail->Body    = $message;
+                    $mail->AltBody = '';
+
+                    if(!$mail->send()) {
+
+                        $_SESSION["success_messages"] = "<h4 class='success_message'><strong>Регистрация прошла успешно!!!</strong></h4><p class='success_message'> Теперь необходимо подтвердить введенный адрес электронной почты. Для этого, перейдите по ссылке указанную в сообщение, которую получили на почту ".$email." </p>";
+
+                        //Отправляем пользователя на страницу регистрации и убираем форму регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: ".$address_site."/form_register.php?hidden_form=1");
+                        exit();
+
+                    } else {
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p>";
+                    }
+
                     //Составляем заголовок письма
-                    $subject = "Подтверждение почты на сайте ".$_SERVER['HTTP_HOST'];
+                    /*$subject = "Подтверждение почты на сайте ".$_SERVER['HTTP_HOST'];
 
                     //Устанавливаем кодировку заголовка письма и кодируем его
                     //$subject = "=?utf-8?B?".base64_encode($subject)."?=";
@@ -363,7 +402,7 @@
 
                         exit();
                         $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p>";
-                    }
+                    }*/
                     
                 }
             }
