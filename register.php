@@ -309,14 +309,32 @@
                     $subject = "Подтверждение почты на сайте ".$_SERVER['HTTP_HOST'];
 
                     //Устанавливаем кодировку заголовка письма и кодируем его
-                    $subject = "=?utf-8?B?".base64_encode($subject)."?=";
+                    //$subject = "=?utf-8?B?".base64_encode($subject)."?=";
 
                     //Составляем тело сообщения
-                    $message = 'Здравствуйте! <br/> <br/> Сегодня '.date("d.m.Y", time()).', неким пользователем была произведена регистрация на сайте <a href="'.$address_site.'">'.$_SERVER['HTTP_HOST'].'</a> используя Ваш email. Если это были Вы, то, пожалуйста, подтвердите адрес вашей электронной почты, перейдя по этой ссылке: <a href="'.$address_site.'activation.php?token='.$token.'&email='.$email.'">'.$address_site.'activation/'.$token.'</a> <br/> <br/> В противном случае, если это были не Вы, то, просто игнорируйте это письмо. <br/> <br/> <strong>Внимание!</strong> Ссылка действительна 24 часа. После чего Ваш аккаунт будет удален из базы.';
+                    
+                    $message = "
+                      <p>Здравствуйте!</p>\r\n
+                      <p>Сегодня ".date("d.m.Y", time()).",</p>\r\n
+                    ";
+
+                    $message = str_replace("\n.", "\n..", $message);
+
+                    //$message = 'Здравствуйте! <br/> <br/> Сегодня '.date("d.m.Y", time()).', неким пользователем была произведена регистрация на сайте <a href="'.$address_site.'">'.$_SERVER['HTTP_HOST'].'</a> используя Ваш email. Если это были Вы, то, пожалуйста, подтвердите адрес вашей электронной почты, перейдя по этой ссылке: <a href="'.$address_site.'/activation.php?token='.$token.'&email='.$email.'">'.$address_site.'/activation/'.$token.'</a> <br/> <br/> В противном случае, если это были не Вы, то, просто игнорируйте это письмо. <br/> <br/> <strong>Внимание!</strong> Ссылка действительна 24 часа. После чего Ваш аккаунт будет удален из базы.';
+
+                    // На случай если какая-то строка письма длиннее 70 символов мы используем wordwrap()
+                    $message = wordwrap($message, 70, "\r\n");
 
                     //Составляем дополнительные заголовки для почтового сервиса mail.ru
                     //Переменная $email_admin, объявлена в файле dbconnect.php
-                    $headers = "FROM: $email_admin\r\nReply-to: $email_admin\r\nContent-type: text/html; charset=utf-8\r\n";
+                    // Для отправки HTML-письма должен быть установлен заголовок Content-type
+                    $headers = "MIME-Version: 1.0" . "\r\n";
+                    $headers .= "Content-type: text/html; charset=utf-8" . "\r\n";
+
+                    // Дополнительные заголовки
+                    $headers .= "From: Admin <$email_admin>" . "\r\n";
+                    $headers .= "Reply-to: $email_admin" . "\r\n";
+                    //$headers = "FROM: $email_admin\r\nReply-to: $email_admin\r\nContent-type: text/html; charset=utf-8\r\n";
 
                     //Отправляем сообщение с ссылкой для подтверждения регистрации на указанную почту и проверяем отправлена ли она успешно или нет.
                     if(mail($email, $subject, $message, $headers)){
@@ -328,6 +346,22 @@
                         exit();
 
                     }else{
+                        $errorMessage = error_get_last()['message'];
+                        echo "<br /> errorMessage: ";
+                        var_dump($errorMessage);
+
+                        echo "<br />";
+                        var_dump(date("d.m.Y", time()));
+                        echo "<br /> address_site: ";
+                        var_dump($address_site);
+                        echo "<br /> http_host: ";
+                        var_dump($_SERVER['HTTP_HOST']);
+                        echo "<br /> token: ";
+                        var_dump($token);
+                        echo "<br /> Message: ";
+                        var_dump($message);
+
+                        exit();
                         $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p>";
                     }
                     
