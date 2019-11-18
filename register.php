@@ -1,4 +1,15 @@
 <?php
+
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    use PHPMailer\PHPMailer\SMTP;
+
+    // Подключаем библиотеку PHPMAILER
+    // Файлы phpmailer
+    require_once('phpmailer/PHPMailer.php');
+    require_once('phpmailer/SMTP.php');
+    require_once('phpmailer/Exception.php');
+
     //Запускаем сессию
     session_start();
 
@@ -270,30 +281,24 @@
                 exit();
             }
 
-            // Подключаем библиотеку PHPMAILER
-            // Файлы phpmailer
-            require_once('phpmailer/PHPMailer.php');
-            require_once('phpmailer/SMTP.php');
-            require_once('phpmailer/Exception.php');
-
-
-            $mail = new PHPMailer\PHPMailer\PHPMailer();
+            $mail = new PHPMailer(true);
+            $mail->CharSet = "UTF-8";
 
             try {
-
-                $mail->CharSet = 'utf-8';
+                //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // Включает debug
 
                 $mail->isSMTP(); // Указываем что необходимо использовать SMTP
 
-                $mail->SMTPAuth = true; // Включаем SMTP авторизацию
+                $mail->Host = 'ssl://smtp.gmail.com'; // Указываем SMTP сервер, который будет отправлять письма
 
-                $mail->Host = 'smtp.yandex.ru'; // Указываем SMTP сервер, который будет отправлять письма
-                $mail->Username = 's5mtphost@yandex.ru'; // Ваш логин от почты с которой будут отправляться письма
-                $mail->Password = 's5mtphost25'; //  iqplaaqezboiujwv  Ваш пароль от почты с которой будут отправляться письма
-                $mail->SMTPSecure = 'ssl';  // Включаем шифровку ssl. Можно и TLS.
+                $mail->SMTPAuth = true; // Включаем SMTP авторизацию
+                $mail->Username = $username_smtp; // Указан в файле dbconnect.php. Ваш логин от почты с которой будут отправляться письма
+                $mail->Password = $password_smtp; // Указан в файле dbconnect.php. Ваш пароль от почты с которой будут отправляться письма
+
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  // Включаем шифровку ssl. Можно и TLS.
                 $mail->Port = 465; // TCP порт. Этот порт может отличаться у других провайдеров
 
-                $mail->setFrom('s5mtphost@yandex.ru'); // от кого будет уходить письмо?
+                $mail->setFrom($username_smtp); // от кого будет уходить письмо?
 
                 $mail->addAddress($email); // Кому будет уходить письмо
 
@@ -410,7 +415,7 @@
 
                                 exit();
                                 $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p>";
-                            
+
                             }*/
 
                         }
