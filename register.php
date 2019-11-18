@@ -285,8 +285,8 @@
             $mail->CharSet = "UTF-8";
 
             try {
-                //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // Включает debug
-
+                $mail->SMTPDebug = SMTP::DEBUG_SERVER; // Включает debug
+                
                 $mail->isSMTP(); // Указываем что необходимо использовать SMTP
 
                 $mail->Host = 'ssl://smtp.gmail.com'; // Указываем SMTP сервер, который будет отправлять письма
