@@ -289,7 +289,7 @@
                 
                 $mail->isSMTP(); // Указываем что необходимо использовать SMTP
 
-                $mail->Host = 'ssl://smtp.gmail.com'; // Указываем SMTP сервер, который будет отправлять письма
+                $mail->Host = 'ssl://smtp.gmail.com:465'; // Указываем SMTP сервер, который будет отправлять письма
 
                 $mail->SMTPAuth = true; // Включаем SMTP авторизацию
                 $mail->Username = $username_smtp; // Указан в файле dbconnect.php. Ваш логин от почты с которой будут отправляться письма
@@ -428,11 +428,16 @@
                     exit();
 
                 } else {
+                    
                     $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p><p> Причина ошибки: {$mail->ErrorInfo} </p>";
                 }
 
             } catch (Exception $e) {
-                $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p><p> Причина ошибки: {$mail->ErrorInfo} </p>";
+                $_SESSION["error_messages"] .= "<p class='mesage_error' >Exception: Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p><p> Причина ошибки: {$mail->ErrorInfo} </p>";
+
+                var_dump($mail->Debugoutput);
+                    exit();
+
                 //echo "Сообщение не было отправлено. Причина ошибки: {$mail->ErrorInfo}";
             }
 
