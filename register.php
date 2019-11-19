@@ -285,19 +285,24 @@
             $mail->CharSet = "UTF-8";
 
             try {
+
+                //Enable SMTP debugging
+                // SMTP::DEBUG_OFF = off (for production use)
+                // SMTP::DEBUG_CLIENT = client messages
+                // SMTP::DEBUG_SERVER = client and server messages
                 $mail->SMTPDebug = SMTP::DEBUG_SERVER; // Включает debug
                 
                 $mail->isSMTP(); // Указываем что необходимо использовать SMTP
 
-                $mail->Host = 'ssl://smtp.gmail.com'; // Указываем SMTP сервер, который будет отправлять письма
+                $mail->Host = 'smtp.gmail.com'; // Указываем SMTP сервер, который будет отправлять письма
+
+                $mail->Port = 587; // TCP порт. Этот порт может отличаться у других провайдеров
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // PHPMailer::ENCRYPTION_SMTPS;
 
                 $mail->SMTPAuth = true; // Включаем SMTP авторизацию
                 $mail->Username = $username_smtp; // Указан в файле dbconnect.php. Ваш логин от почты с которой будут отправляться письма
                 $mail->Password = $password_smtp; // Указан в файле dbconnect.php. Ваш пароль от почты с которой будут отправляться письма
-
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  // Включаем шифровку ssl. Можно и TLS.
-                $mail->Port = 465; // TCP порт. Этот порт может отличаться у других провайдеров
-
+                
                 $mail->setFrom($username_smtp); // от кого будет уходить письмо?
 
                 $mail->addAddress($email); // Кому будет уходить письмо
