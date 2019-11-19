@@ -289,15 +289,14 @@
                 
                 $mail->isSMTP(); // Указываем что необходимо использовать SMTP
 
-                $mail->SMTPAuth = true; // Включаем SMTP авторизацию
-                $mail->Port = 465; // TCP порт. Этот порт может отличаться у других провайдеров
+                $mail->Host = 'ssl://smtp.gmail.com:465'; // Указываем SMTP сервер, который будет отправлять письма
 
-                $mail->Host = 'ssl://smtp.gmail.com'; // Указываем SMTP сервер, который будет отправлять письма
+                $mail->SMTPAuth = true; // Включаем SMTP авторизацию
                 $mail->Username = $username_smtp; // Указан в файле dbconnect.php. Ваш логин от почты с которой будут отправляться письма
                 $mail->Password = $password_smtp; // Указан в файле dbconnect.php. Ваш пароль от почты с которой будут отправляться письма
 
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  // Включаем шифровку ssl. Можно и TLS.
-
+                $mail->Port = 465; // TCP порт. Этот порт может отличаться у других провайдеров
 
                 $mail->setFrom($username_smtp); // от кого будет уходить письмо?
 
@@ -429,15 +428,16 @@
                     exit();
 
                 } else {
-                    var_dump($mail->ErrorInfo);
-                    var_dump($mail->Debugoutput);
-                    exit();
-
+                    
                     $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p><p> Причина ошибки: {$mail->ErrorInfo} </p>";
                 }
 
             } catch (Exception $e) {
-                $_SESSION["error_messages"] .= "<p class='mesage_error'>Exception: Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p><p> Причина ошибки: {$mail->ErrorInfo} </p>";
+                $_SESSION["error_messages"] .= "<p class='mesage_error' >Exception: Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p><p> Причина ошибки: {$mail->ErrorInfo} </p>";
+
+                var_dump($mail->Debugoutput);
+                exit();
+
                 //echo "Сообщение не было отправлено. Причина ошибки: {$mail->ErrorInfo}";
             }
 
