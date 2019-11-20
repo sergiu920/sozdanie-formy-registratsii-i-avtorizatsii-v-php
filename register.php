@@ -296,8 +296,8 @@
 
                 $mail->Host = 'smtp.gmail.com'; // Указываем SMTP сервер, который будет отправлять письма
 
-                $mail->Port = 465; // 587 - TLS; 465 - SSL; TCP порт. Этот порт может отличаться у других провайдеров
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Port = 587; // 587 - TLS; 465 - SSL; TCP порт. Этот порт может отличаться у других провайдеров
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // PHPMailer::ENCRYPTION_STARTTLS;, PHPMailer::ENCRYPTION_SMTPS;
 
                 $mail->SMTPAuth = true; // Включаем SMTP авторизацию
                 $mail->Username = $username_smtp; // Указан в файле dbconnect.php. Ваш логин от почты с которой будут отправляться письма
