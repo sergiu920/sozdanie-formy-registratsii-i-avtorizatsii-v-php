@@ -299,8 +299,8 @@
                 $mail->Username = $username_smtp; // Указан в файле dbconnect.php. Ваш логин от почты с которой будут отправляться письма
                 $mail->Password = $password_smtp; // Указан в файле dbconnect.php. Ваш пароль от почты с которой будут отправляться письма
 
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // PHPMailer::ENCRYPTION_STARTTLS;, PHPMailer::ENCRYPTION_SMTPS;
-                $mail->Port = 465; // 587 - TLS; 465 - SSL; TCP порт. Этот порт может отличаться у других провайдеров
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // PHPMailer::ENCRYPTION_STARTTLS;, PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Port = 587; // 587 - TLS; 465 - SSL; TCP порт. Этот порт может отличаться у других провайдеров
                 
                 $mail->setFrom($username_smtp); // от кого будет уходить письмо?
 
