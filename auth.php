@@ -175,7 +175,7 @@
 
                             //Возвращаем пользователя на страницу авторизации
                             header("HTTP/1.1 301 Moved Permanently");
-                            header("Location: ".$address_site."form_auth.php");
+                            header("Location: ".$address_site."/form_auth.php");
 
                             //Останавливаем скрипт
                             exit();
@@ -188,7 +188,7 @@
 
                             //Возвращаем пользователя на главную страницу
                             header("HTTP/1.1 301 Moved Permanently");
-                            header("Location: ".$address_site."index.php");
+                            header("Location: ".$address_site."/index.php");
 
                             //Останавливаем скрипт
                             exit();
