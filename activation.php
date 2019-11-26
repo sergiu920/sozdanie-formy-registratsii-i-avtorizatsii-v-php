@@ -46,6 +46,35 @@ if(($row = $query_select_user->fetch_assoc()) != false){
         if($token == $row['token']){
 
             //(1) Место для следующего куска кода
+            //Обновляем статус почтового адреса
+            $query_update_user = $mysqli->query("UPDATE `users` SET `email_status` = 1 WHERE `email` = '".$email."'");
+
+            if(!$query_update_user){
+
+                exit("<p><strong>Ошибка!</strong> Сбой при обновлении статуса пользователя. Код ошибки: ".$mysqli->errno."</p>");
+
+            }else{
+
+                //Удаляем данные пользователя из временной таблицы confirm_users
+                $query_delete = $mysqli->query("DELETE FROM `confirm_users` WHERE `email` = '".$email."'");
+
+                if(!$query_delete){
+
+                    exit("<p><strong>Ошибка!</strong> Сбой при удалении данных пользователя из временной таблицы. Код ошибки: ".$mysqli->errno."</p>");
+
+                }else{
+
+                    //Подключение шапки
+                    require_once("header.php");
+
+                    //Выводим сообщение о том, что почта успешно подтверждена.
+                    echo '<h1 class="success_message text_center">Почта успешно подтверждена!</h1>';
+                    echo '<p class="text_center">Теперь Вы можете войти в свой аккаунт.</p>';
+
+                    //Подключение подвала
+                    require_once("footer.php");
+                }
+            }
 
         }else{ //if($token == $row['token'])
             exit("<p><strong>Ошибка!</strong> Неправильный проверочный код.</p>");
