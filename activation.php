@@ -38,7 +38,6 @@ $query_select_user = $mysqli->query("SELECT `token` FROM `confirm_users` WHERE `
 //Если ошибок в запросе нет
 if(($row = $query_select_user->fetch_assoc()) != false){
 
-
     //Если такой пользователь существует
     if($query_select_user->num_rows == 1){
 
