@@ -48,11 +48,11 @@ if(!$query_delete_confirm_users){
 //Делаем запрос на выборке токена из таблицы confirm_users
 $query_select_user = $mysqli->query("SELECT `token` FROM `confirm_users` WHERE `email` = '".$email."'");
 
-//Если ошибок в запросе нет
-if(($row = $query_select_user->fetch_assoc()) != false){
+//Если такой пользователь существует, то подтверждаем его почту
+if($query_select_user->num_rows == 1){
 
-    //Если такой пользователь существует
-    if($query_select_user->num_rows == 1){
+    //Если ошибок в запросе нет
+    if(($row = $query_select_user->fetch_assoc()) != false){
 
         //Проверяем совпадает ли token
         if($token == $row['token']){
@@ -92,13 +92,13 @@ if(($row = $query_select_user->fetch_assoc()) != false){
             exit("<p><strong>Ошибка!</strong> Неправильный проверочный код.</p>");
         }
 
-    }else{ //if($query_select_user->num_rows == 1)
-        exit("<p><strong>Ошибка!</strong> Такой пользователь не зарегистрирован </p>");
+    }else{ //if(($row = $query_select_user->fetch_assoc()) != false)
+        exit("<p><strong>Ошибка!</strong> Сбой при выборе пользователя из БД. </p>");
     }
 
-}else{ //if(($row = $query_select_user->fetch_assoc()) != false)
-    //Иначе, если есть ошибки в запросе к БД
-    exit("<p><strong>Ошибка!</strong> Сбой при выборе пользователя из БД. </p>");
+}else{ // if($query_select_user->num_rows == 1)
+    exit("<p><strong>Ошибка!</strong> Такой пользователь не зарегистрирован. Ваш аккаунт был удален из за того что вы не подтвердили свою почту в течении 24 часов с момента регистрации </p>");
+
 }
 
 //Закрываем подключение к БД
