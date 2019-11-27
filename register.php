@@ -159,6 +159,18 @@
                         exit();
                     }
 
+                    //Удаляем пользователей из таблицы users, которые не подтвердили свою почту в течении сутки
+                    $query_delete_users = $mysqli->query("DELETE FROM `users` WHERE `email_status` = 0 AND `date_registration` < ( NOW() - INTERVAL 1 DAY )");
+                    if(!$query_delete_users){
+                        exit("<p><strong>Ошибка!</strong> Сбой при удалении просроченного аккаунта. Код ошибки: ".$mysqli->errno."</p>");
+                    }
+
+                    //Удаляем пользователей из таблицы confirm_users, которые не подтвердили свою почту в течении сутки
+                    $query_delete_confirm_users = $mysqli->query("DELETE FROM `confirm_users` WHERE `date_registration` < ( NOW() - INTERVAL 1 DAY)");
+                    if(!$query_delete_confirm_users){
+                        exit("<p><strong>Ошибка!</strong> Сбой при удалении просроченного аккаунта(confirm). Код ошибки: ".$mysqli->errno."</p>");
+                    }
+
                     //Проверяем нет ли уже такого адреса в БД.
                     $result_query = $mysqli->query("SELECT `email` FROM `users` WHERE `email`='".$email."'");
                     
@@ -324,11 +336,7 @@
 
 
                     // (4) Место для кода добавления пользователя в БД
-                    //Удаляем пользователей из таблицы users, которые не подтвердили свою почту в течении сутки
-                    $query_delete_users = $mysqli->query("DELETE FROM `users` WHERE `email_status` = 0 AND `date_registration` < ( NOW() - INTERVAL 1 DAY )");
-                    if(!$query_delete_users){
-                        exit("<p><strong>Ошибка!</strong> Сбой при удалении просроченного аккаунта. Код ошибки: ".$mysqli->errno."</p>");
-                    }
+
 
                     //Запрос на добавления пользователя в БД
                     $result_query_insert = $mysqli->query("INSERT INTO `users` (first_name, last_name, email, password, date_registration) VALUES ('".$first_name."', '".$last_name."', '".$email."', '".$password."', NOW())");
@@ -344,12 +352,6 @@
                         //Останавливаем  скрипт
                         exit();
                     }else{
-
-                        //Удаляем пользователей из таблицы confirm_users, которые не подтвердили свою почту в течении сутки
-                        $query_delete_confirm_users = $mysqli->query("DELETE FROM `confirm_users` WHERE `date_registration` < ( NOW() - INTERVAL 1 DAY)");
-                        if(!$query_delete_confirm_users){
-                            exit("<p><strong>Ошибка!</strong> Сбой при удалении просроченного аккаунта(confirm). Код ошибки: ".$mysqli->errno."</p>");
-                        }
 
                         //Добавляем данные в таблицу confirm_users
                         $query_insert_confirm = $mysqli->query("INSERT INTO `confirm_users` (email, token, date_registration) VALUES ('".$email."', '".$token."', NOW()) ");
