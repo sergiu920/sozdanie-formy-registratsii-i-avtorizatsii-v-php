@@ -1,4 +1,15 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+// Подключаем библиотеку PHPMAILER
+// Файлы phpmailer
+require_once('phpmailer/PHPMailer.php');
+require_once('phpmailer/SMTP.php');
+require_once('phpmailer/Exception.php');
+
 //Запускаем сессию
 session_start();
 
@@ -163,41 +174,69 @@ if(isset($_POST["send"])){
                             //Составляем ссылку на страницу установки нового пароля.
                             $link_reset_password = $address_site."/set_new_password.php?email=$email&token=$token";
 
-                            //Составляем заголовок письма
-                            $subject = "Восстановление пароля от сайта ".$_SERVER['HTTP_HOST'];
 
-                            //Устанавливаем кодировку заголовка письма и кодируем его
-                            $subject = "=?utf-8?B?".base64_encode($subject)."?=";
+                            $mail = new PHPMailer(true);
+                            $mail->CharSet = "UTF-8";
 
-                            //Составляем тело сообщения
-                            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-                            $message = 'Здравствуйте! <br/> <br/> Для восстановления пароля от сайта <a href="'.$protocol.$_SERVER['HTTP_HOST'].'"> '.$_SERVER['HTTP_HOST'].' </a>, перейдите по этой <a href="'.$link_reset_password.'">ссылке</a>.';
+                            try {
 
-                            //Составляем дополнительные заголовки для почтового сервиса mail.ru
-                            //Переменная $email_admin, объявлена в файле dbconnect.php
-                            $headers = "FROM: $email_admin\r\nReply-to: $email_admin\r\nContent-type: text/html; charset=utf-8\r\n";
+                                //Enable SMTP debugging
+                                //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // Включает debug
 
-                            //Отправляем сообщение с ссылкой на страницу установки нового пароля и проверяем отправлена ли она успешно или нет.
-                            if(mail($email, $subject, $message, $headers)){
+                                $mail->isSMTP(); // Указываем что необходимо использовать SMTP
 
-                                $_SESSION["success_messages"] = "<p class='success_message' >Ссылка на страницу установки нового пароля, была отправлена на указанный E-mail ($email) </p>";
+                                $mail->Host = 'smtp.gmail.com'; // Указываем SMTP сервер, который будет отправлять письма
+                                $mail->SMTPAuth = true; // Включаем SMTP авторизацию
+                                $mail->Username = $username_smtp; // Указан в файле dbconnect.php. Ваш логин от почты с которой будут отправляться письма
+                                $mail->Password = $password_smtp; // Указан в файле dbconnect.php. Ваш пароль от почты с которой будут отправляться письма
 
-                                //Отправляем пользователя на страницу восстановления пароля и убираем форму для ввода email
-                                header("HTTP/1.1 301 Moved Permanently");
-                                header("Location: ".$address_site."/reset_password.php?hidden_form=1");
+                                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // PHPMailer::ENCRYPTION_STARTTLS;, PHPMailer::ENCRYPTION_SMTPS;
+                                $mail->Port = 587; // 587 - TLS; 465 - SSL; TCP порт. Этот порт может отличаться у других провайдеров
 
-                                exit();
+                                $mail->setFrom($username_smtp); // от кого будет уходить письмо?
 
-                            }else{
-                                $_SESSION["error_messages"] = "<p class='mesage_error' >Ошибка при отправлении письма на почту ".$email.", с сылкой на страницу установки нового пароля. </p>";
+                                $mail->addAddress($email); // Кому будет уходить письмо
 
-                                //Возвращаем пользователя на страницу восстановления пароля
-                                header("HTTP/1.1 301 Moved Permanently");
-                                header("Location: ".$address_site."/reset_password.php");
+                                $mail->isHTML(true); // Указываем что будем отправлять в формате HTML
 
-                                //Останавливаем скрипт
-                                exit();
+                                $mail->Subject = "Восстановление пароля от сайта ".$_SERVER['HTTP_HOST']; // Составляем заголовок письма
+
+                                //Составляем зашифрованный и уникальный token
+                                $token = md5($email.time());
+
+                                //Составляем тело сообщения
+                                $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+                                $message = 'Здравствуйте! <br/> <br/> Для восстановления пароля от сайта <a href="'.$protocol.$_SERVER['HTTP_HOST'].'"> '.$_SERVER['HTTP_HOST'].' </a>, перейдите по этой <a href="'.$link_reset_password.'">ссылке</a>.';
+
+                                $mail->Body = $message;
+                                //$mail->AltBody = '';
+
+                                if($mail->send()) {
+
+                                    $_SESSION["success_messages"] = "<p class='success_message' >Ссылка на страницу установки нового пароля, была отправлена на указанный E-mail ($email) </p>";
+
+                                    //Отправляем пользователя на страницу восстановления пароля и убираем форму для ввода email
+                                    header("HTTP/1.1 301 Moved Permanently");
+                                    header("Location: ".$address_site."/reset_password.php?hidden_form=1");
+
+                                    exit();
+
+                                } else {
+
+                                    $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка при отправлении письма на почту ".$email.", с сылкой на страницу установки нового пароля. </p><p> Причина ошибки: {$mail->ErrorInfo} </p>";
+                                }
+
+                            } catch (Exception $e) {
+                                $_SESSION["error_messages"] .= "<p class='mesage_error' >Exception: Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p><p> Причина ошибки: {$mail->ErrorInfo} </p>";
                             }
+
+                            //Возвращаем пользователя на страницу восстановления пароля
+                            header("HTTP/1.1 301 Moved Permanently");
+                            header("Location: ".$address_site."/reset_password.php");
+
+                            //Останавливаем скрипт
+                            exit();
+
                         }
                     } // if($row["email_status"] === 0)
 

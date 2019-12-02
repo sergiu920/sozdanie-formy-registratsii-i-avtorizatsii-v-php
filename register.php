@@ -320,7 +320,7 @@
 
                 $mail->isHTML(true); // Указываем что будем отправлять в формате HTML
 
-                $mail->Subject = "Подтверждение почты на сайте ".$_SERVER['HTTP_HOST'];
+                $mail->Subject = "Подтверждение почты на сайте ".$_SERVER['HTTP_HOST']; // Составляем заголовок письма
 
                 //Составляем зашифрованный и уникальный token
                 $token = md5($email.time());
@@ -382,8 +382,6 @@
             } catch (Exception $e) {
                 $_SESSION["error_messages"] .= "<p class='mesage_error' >Exception: Ошибка при отправлении письма с сылкой подтверждения, на почту ".$email." </p><p> Причина ошибки: {$mail->ErrorInfo} </p>";
             }
-
-
 
             //Закрываем подключение к БД
             $mysqli->close();
