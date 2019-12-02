@@ -60,7 +60,7 @@ if((!isset($_SESSION["email"]) && !isset($_SESSION["password"]))) {
         <!-- Абзац -->
         <p class="text_center mesage_error" id="valid_email_message"></p>
 
-        <form action="send_new_password.php" method="post" name="form_request_email" >
+        <form action="send_link_reset_password.php" method="post" name="form_request_email" >
             <table>
                 <tr>
                     <td> Введите Ваш <br />E-mail: </td>
