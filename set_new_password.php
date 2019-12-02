@@ -129,7 +129,7 @@ if($query_select_user->num_rows == 1){
                     </table>
                 </form>
             </div>
-            
+
 <?php
             //Подключение подвала
             require_once("footer.php");
