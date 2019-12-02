@@ -121,8 +121,11 @@
                 </tr>
  
                 <tr>
-                    <td colspan="2">
+                    <td>
                         <input type="submit" name="btn_submit_auth" value="Войти">
+                    </td>
+                    <td>
+                        <a href="reset_password.php">Забыли пароль?</a>
                     </td>
                 </tr>
             </tbody></table>

@@ -82,7 +82,7 @@
 }
 
 /* Блок с формой регистрации */
-#form_register, #form_auth{
+#form_register, #form_auth, #form_request_email{
     width: 300px;
     margin: 0 auto;
 }
