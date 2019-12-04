@@ -96,6 +96,31 @@ if(isset($_POST["set_new_password"]) && !empty($_POST["set_new_password"])){
     }
 
     //(2) Место для следующего куска кода
+    $query_update_password = $mysqli->query("UPDATE users SET password='$password' WHERE email='$email'");
+
+    if(!$query_update_password){
+
+        // Сохраняем в сессию сообщение об ошибке.
+        $_SESSION["error_messages"] = "<p class='mesage_error' >Возникла ошибка при изменении пароля.</p><p><strong>Описание ошибки</strong>: ".$mysqli->error."</p>";
+
+        //Возвращаем пользователя на страницу установки нового пароля
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: ".$address_site."set_new_password.php?email=$email&token=$token");
+
+        //Останавливаем  скрипт
+        exit();
+
+    }else{
+        //Подключение шапки
+        require_once("header.php");
+
+        //Выводим сообщение о том, что пароль установлен успешно.
+        echo '<h1 class="success_message text_center">Пароль успешно изменён!</h1>';
+        echo '<p class="text_center">Теперь Вы можете войти в свой аккаунт.</p>';
+
+        //Подключение подвала
+        require_once("footer.php");
+    }
 
 }else{
     exit("<p><strong>Ошибка!</strong> Вы зашли на эту страницу напрямую, поэтому нет данных для обработки. Вы можете перейти на <a href=".$address_site."> главную страницу </a>.</p>");
