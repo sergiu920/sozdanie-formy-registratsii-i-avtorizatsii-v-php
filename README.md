@@ -4,7 +4,7 @@
 <h2>Описание веток</h2>
 
 <p>
-  <strong>version_article_1</strong> - В этой ветке находятся исходники функционала, который был реализован в статье <a href="https://sozdatisite.ru/php/sozdanie-formy-registratsii-i-avtorizatsii-v-php.html">Создание формы регистрации и авторизации</a>
+  <strong>sozdanie-formy-registratsii-i-avtorizatsii-v-php</strong> - В этой ветке находятся исходники функционала, который был реализован в статье <a href="https://sozdatisite.ru/php/sozdanie-formy-registratsii-i-avtorizatsii-v-php.html">Создание формы регистрации и авторизации</a>
 </p>
 
 <h2>Импорт базы данных</h2>
@@ -34,7 +34,7 @@
         $mysqli = new mysqli($server, $username, $password, $database);
 
         // Проверяем, успешность соединения. 
-        if (mysqli_connect_errno()) { 
+        if ($mysqli->connect_errno) { 
             echo "<p><strong>Ошибка подключения к БД</strong>. Описание ошибки: ".mysqli_connect_error()."</p>";
             exit(); 
         }
