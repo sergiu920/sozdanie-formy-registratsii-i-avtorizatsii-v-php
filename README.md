@@ -34,9 +34,8 @@
         $mysqli = new mysqli($server, $username, $password, $database);
 
         // Проверяем, успешность соединения. 
-        if ($mysqli->connect_errno) { 
-            echo "<p><strong>Ошибка подключения к БД</strong>. Описание ошибки: ".mysqli_connect_error()."</p>";
-            exit(); 
+        if ($mysqli->connect_errno) {
+                die("<p><strong>Ошибка подключения к БД</strong></p><p><strong>Код ошибки: </strong> ". $mysqli->connect_errno ." </p><p><strong>Описание ошибки:</strong> ".$mysqli->connect_error."</p>");
         }
 
         // Устанавливаем кодировку подключения
